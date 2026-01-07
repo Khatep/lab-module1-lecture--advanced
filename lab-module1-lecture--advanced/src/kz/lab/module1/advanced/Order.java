@@ -4,4 +4,19 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 public record Order(long id, double price, LocalDateTime orderDate, Set<String> items ) {
+    public Order {
+        if (price <= 0) {
+            throw new IllegalArgumentException("Price must be greater than 0");
+        }
+
+        if (orderDate.isAfter(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Order date must be in the past");
+        }
+
+        if (items == null || items.isEmpty()) {
+            throw new IllegalArgumentException("Items must not be null or empty");
+        }
+
+        items = Set.copyOf(items);
+    }
 }
